@@ -1,0 +1,26 @@
+#!/usr/bin/env php
+<?php
+
+use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand;
+use Fedot\MongoTest\Command\WriteCommand;
+use Fedot\MongoTest\Console\Application;
+use Fedot\MongoTest\Console\DocumentManagerHelper;
+
+require __DIR__.'/../vendor/autoload.php';
+
+$builder = new \DI\ContainerBuilder();
+$builder->addDefinitions(__DIR__.'/../config.php');
+$container = $builder->build();
+
+$helperSet = new \Symfony\Component\Console\Helper\HelperSet();
+$helperSet->set($container->get(DocumentManagerHelper::class));
+
+$application = new Application($container);
+$application->setHelperSet($helperSet);
+
+$application->addCommands([
+    new WriteCommand(),
+    new DropCommand(),
+]);
+
+$application->run();
