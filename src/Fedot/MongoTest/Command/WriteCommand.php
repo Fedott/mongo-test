@@ -14,14 +14,16 @@ class WriteCommand extends Command
     {
         $this
             ->setName('write-cycle')
-            ->addArgument('startCount', InputArgument::REQUIRED);
+            ->addArgument('serialNumber', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Start write");
 
-        $startCount = $input->getArgument('startCount');
+        $serialNumber = $input->getArgument('serialNumber');
+
+        $startCount = $serialNumber * Counter::COUNTER;
 
         $documentManager = $this->getDocumentManager();
         $startTime = microtime(true);
@@ -34,7 +36,7 @@ class WriteCommand extends Command
 
             $documentManager->clear();
 
-            if ($i % 1000 == 0) {
+            if ($i % 10000 == 0) {
                 $stopTime = microtime(true);
                 $time = $stopTime - $startTime;
                 $output->writeln("Current counter: $i, time: $time");

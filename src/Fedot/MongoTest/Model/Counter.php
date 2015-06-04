@@ -9,6 +9,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  */
 class Counter
 {
+    const COUNTER = 100000000000000;
+
     /**
      * @ODM\Id
      *
@@ -17,7 +19,7 @@ class Counter
     public $id;
 
     /**
-     * @ODM\String
+     * @ODM\Integer
      *
      * @var string
      */
