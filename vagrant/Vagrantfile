@@ -1,0 +1,29 @@
+$provisionScript = <<SCRIPT
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+echo "dbpath = /var/lib/mongodb" > /etc/mongod.conf
+echo "logpath = /var/log/mongodb/mongod.log" >> /etc/mongod.conf
+echo "logappend = true" >> /etc/mongod.conf
+echo "replSet = mongo-test" >> /etc/mongod.conf
+service mongod restart
+
+SCRIPT
+
+Vagrant.configure("2") do |config|
+    config.vm.define "mongo1" do |db|
+        db.vm.box = "ubuntu/trusty64"
+        db.vm.network :private_network, ip: "10.10.10.2"
+    end
+    config.vm.define "mongo2" do |db|
+        db.vm.box = "ubuntu/trusty64"
+        db.vm.network :private_network, ip: "10.10.10.3"
+    end
+    config.vm.define "mongo3" do |db|
+        db.vm.box = "ubuntu/trusty64"
+        db.vm.network :private_network, ip: "10.10.10.4"
+    end
+
+    config.vm.provision "shell", inline: $provisionScript
+end

@@ -6,7 +6,8 @@ if (file_exists(__DIR__."/config.local.php")) {
 }
 
 return $localConfig + [
-    'db.host' => '127.0.0.1',
+    'db.host' => 'mongodb://10.10.10.2:27017,10.10.10.3:27017,10.10.10.4:27017',
+    'db.options' => ['replicaSet' => 'mongo-test'],
     'db.database' => 'mongo-test',
     'doctrine.proxyDir' => __DIR__.'/cache/proxies',
     'doctrine.proxyNamespace' => 'Proxies',
@@ -27,7 +28,7 @@ return $localConfig + [
     }),
 
     'doctrine.connection' => DI\object(Doctrine\MongoDB\Connection::class)
-        ->constructor(DI\link('db.host')),
+        ->constructor(DI\link('db.host'), DI\link('db.options')),
 
     'doctrine.configuration' => DI\object(Doctrine\ODM\MongoDB\Configuration::class)
         ->method('setProxyDir', DI\link('doctrine.proxyDir'))
