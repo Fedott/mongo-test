@@ -4,6 +4,7 @@
 use Doctrine\ODM\MongoDB\Tools\Console\Command\Schema\DropCommand;
 use Fedot\MongoTest\Command\CheckCommand;
 use Fedot\MongoTest\Command\WriteCommand;
+use Fedot\MongoTest\Command\WriteRunnerCommand;
 use Fedot\MongoTest\Console\Application;
 use Fedot\MongoTest\Console\DocumentManagerHelper;
 
@@ -22,6 +23,7 @@ $application->setHelperSet($helperSet);
 $application->addCommands([
     new WriteCommand(),
     new CheckCommand(),
+    new WriteRunnerCommand(),
     new DropCommand(),
 ]);
 

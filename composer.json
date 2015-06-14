@@ -10,6 +10,7 @@
   "require": {
     "symfony/console": "*",
     "mnapoli/php-di": "~4.4",
-    "doctrine/mongodb-odm": "1.0.*@dev"
+    "doctrine/mongodb-odm": "1.0.*@dev",
+    "symfony/process": "^2.7"
   }
 }

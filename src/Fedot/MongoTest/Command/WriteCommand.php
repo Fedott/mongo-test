@@ -29,18 +29,22 @@ class WriteCommand extends Command
         $startTime = microtime(true);
 
         for ($i = $startCount;; $i++) {
-            $counter = new Counter();
-            $counter->count = $i;
-            $documentManager->persist($counter);
-            $documentManager->flush();
+            try {
+                $counter = new Counter();
+                $counter->count = $i;
+                $documentManager->persist($counter);
+                $documentManager->flush();
 
-            $documentManager->clear();
+                $documentManager->clear();
 
-            if ($i % 10000 == 0) {
-                $stopTime = microtime(true);
-                $time = $stopTime - $startTime;
-                $output->writeln("Current counter: $i, time: $time");
-                $startTime = microtime(true);
+                if ($i % 10000 == 0) {
+                    $stopTime = microtime(true);
+                    $time = $stopTime - $startTime;
+                    $output->writeln("Current counter: $i, time: $time");
+                    $startTime = microtime(true);
+                }
+            } catch (\MongoCursorException $e) {
+                $output->writeln("<error>Error: ". $e->getMessage() ."</error>");
             }
         }
     }
